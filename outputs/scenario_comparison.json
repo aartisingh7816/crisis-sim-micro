@@ -1,0 +1,28 @@
+[
+  {
+    "responders": 1,
+    "households": 5,
+    "evacuated": 5,
+    "evacuation_success_rate_percent": 100.0,
+    "average_response_time_minutes": 30.2,
+    "makespan_minutes": 63,
+    "responder_utilisation_percent": 100.0,
+    "hospital_capacity": 3,
+    "hospital_admissions": 3,
+    "hospital_declined": 0,
+    "capacity_violations": 0
+  },
+  {
+    "responders": 2,
+    "households": 5,
+    "evacuated": 5,
+    "evacuation_success_rate_percent": 100.0,
+    "average_response_time_minutes": 12.0,
+    "makespan_minutes": 35,
+    "responder_utilisation_percent": 90.0,
+    "hospital_capacity": 3,
+    "hospital_admissions": 3,
+    "hospital_declined": 0,
+    "capacity_violations": 0
+  }
+]
