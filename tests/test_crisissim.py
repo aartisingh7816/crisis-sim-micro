@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from crisissim import Hospital, Household, load_households, simulate
+from crisissim import Hospital, Household, load_households, run_experiments, simulate
 
 
 class CrisisSimTests(unittest.TestCase):
@@ -38,6 +38,21 @@ class CrisisSimTests(unittest.TestCase):
         self.assertEqual(result["capacity_violations"], 0)
         self.assertLessEqual(result["hospital_admissions"], 3)
 
+
+    def test_shortage_scenario_records_declined_referrals(self):
+        path = Path(__file__).resolve().parents[1] / "data" / "households.csv"
+        result = simulate(load_households(path), 2, 1)
+        self.assertEqual(result["hospital_admissions"], 1)
+        self.assertEqual(result["hospital_declined"], 2)
+        self.assertEqual(result["hospital_declined_households"], ["H02", "H04"])
+        self.assertEqual(result["capacity_violations"], 0)
+
+    def test_experiment_suite_has_two_baselines_and_shortage_case(self):
+        path = Path(__file__).resolve().parents[1] / "data" / "households.csv"
+        results = run_experiments(load_households(path))
+        self.assertEqual(len(results), 3)
+        self.assertEqual(results[2]["scenario"], "Hospital shortage: 2 responders, capacity 1")
+        self.assertEqual(results[2]["evacuated"], 5)
 
 if __name__ == "__main__":
     unittest.main()
