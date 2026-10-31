@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CrisisSim | Flood Response Dashboard</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--panel:#121c2d;--panel2:#172438;--line:#293a52;--text:#edf4ff;--muted:#9eb0c9;--teal:#45d6c5;--blue:#69a9ff;--amber:#ffc86b;--red:#ff7c83;--green:#7ce0a2}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#142944 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",Arial,sans-serif}
+    main{width:min(1180px,94vw);margin:30px auto 56px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:22px}.eyebrow{color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:7px 0 9px}.subtitle{margin:0;color:var(--muted);max-width:720px}.badge{border:1px solid #376652;border-radius:999px;padding:8px 12px;color:#9ef0bd;background:#143326;white-space:nowrap;font-size:12px;font-weight:700}
+    .panel{background:linear-gradient(145deg,rgba(23,36,56,.96),rgba(16,26,42,.98));border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 14px 34px #0002}.controls{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:18px;align-items:end}.control label{display:flex;justify-content:space-between;gap:12px;font-weight:700;margin-bottom:8px}.control output{color:var(--teal)}input[type=range]{width:100%;accent-color:var(--teal)}.hint{font-size:12px;color:var(--muted);margin-top:5px}button{border:0;border-radius:10px;background:var(--teal);color:#07231f;padding:12px 19px;font-weight:800;font-size:14px;cursor:pointer}button:hover{filter:brightness(1.08)}button:disabled{opacity:.6;cursor:wait}
+    .notice{margin:14px 0 22px;border-left:3px solid var(--amber);padding:10px 13px;color:#d4dfed;background:#191f2b;border-radius:0 8px 8px 0;font-size:13px}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:26px 0 12px}.section-head h2{font-size:19px;margin:0}.section-head p{color:var(--muted);font-size:12px;margin:0}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.metric{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px}.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:25px;margin-top:4px}.metric small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.compare-card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px}.compare-card h3{margin:0 0 8px;font-size:14px}.compare-card p{color:var(--muted);margin:2px 0;font-size:13px}.responders{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.responder{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px}.responder-head{display:flex;justify-content:space-between;font-weight:800}.responder p{color:var(--muted);margin:6px 0;font-size:13px}.bar{height:8px;background:#26364d;border-radius:99px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:99px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:760px;background:var(--panel)}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:#172438}tr:last-child td{border-bottom:0}.status{display:inline-block;border-radius:99px;padding:3px 8px;font-size:11px;font-weight:700}.admitted{background:#173b2c;color:#98efb9}.declined{background:#47242d;color:#ff9ca5}.none{background:#26364d;color:#b6c5d9}.loading{color:var(--muted);padding:18px}.error{color:#ff9ca5;padding:14px}.foot{color:var(--muted);font-size:12px;margin-top:20px}.foot strong{color:var(--text)}
+    @media(max-width:850px){.controls{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:repeat(2,1fr)}.top{display:block}.badge{display:inline-block;margin-top:14px}}
+    @media(max-width:520px){main{width:92vw;margin-top:18px}.controls,.compare{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.panel{padding:15px}.section-head{display:block}.section-head p{margin-top:4px}}
+  </style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div><div class="eyebrow">CrisisSim · Semester 1 micro project</div><h1>Urban flood response</h1><p class="subtitle">Explore how dispatch, evacuation timing, and hospital capacity change when you adjust the synthetic scenario.</p></div>
+    <div class="badge">SYNTHETIC CLASSROOM SIMULATION</div>
+  </header>
+
+  <section class="panel" aria-label="Scenario settings">
+    <div class="controls">
+      <div class="control"><label for="severity">Flood severity <output id="severity-value">1 / 5</output></label><input id="severity" type="range" min="1" max="5" value="1"><div class="hint">Higher levels raise exposure and rescue time.</div></div>
+      <div class="control"><label for="responders">Responders <output id="responders-value">2</output></label><input id="responders" type="range" min="1" max="5" value="2"><div class="hint">Controls the available rescue teams.</div></div>
+      <div class="control"><label for="capacity">Hospital capacity <output id="capacity-value">3</output></label><input id="capacity" type="range" min="1" max="5" value="3"><div class="hint">Medical referrals beyond capacity are declined.</div></div>
+      <button id="run">Run scenario</button>
+    </div>
+  </section>
+
+  <div class="notice"><strong>Model boundary:</strong> five fictional households, deterministic dispatch rules, and simulated minutes. Outputs are not real-world findings or emergency guidance.</div>
+
+  <div id="loading" class="loading">Loading scenario…</div>
+  <div id="error" class="error" hidden></div>
+  <div id="dashboard" hidden>
+    <div class="section-head"><h2 id="scenario-name">Current scenario</h2><p id="assumption"></p></div>
+    <section class="metrics" aria-label="Scenario results">
+      <div class="metric"><span>Evacuated</span><strong id="evacuated">—</strong><small id="success">—</small></div>
+      <div class="metric"><span>Average assignment time</span><strong id="response">—</strong><small>simulated minutes</small></div>
+      <div class="metric"><span>Scenario makespan</span><strong id="makespan">—</strong><small>simulated minutes</small></div>
+      <div class="metric"><span>Responder utilization</span><strong id="utilisation">—</strong><small>share of available rescue time</small></div>
+      <div class="metric"><span>Hospital referrals</span><strong id="referrals">—</strong><small id="referral-detail">—</small></div>
+    </section>
+
+    <div class="section-head"><h2>Responder agents</h2><p>Assignments and simulated workload by responder</p></div>
+    <section id="responder-cards" class="responders"></section>
+
+    <div class="section-head"><h2>Household agents</h2><p>Priority = 2 × vulnerability + exposure</p></div>
+    <div class="table-wrap"><table><thead><tr><th>Household</th><th>Priority</th><th>Exposure</th><th>Rescue time</th><th>Dispatch</th><th>Responder</th><th>Hospital</th></tr></thead><tbody id="households"></tbody></table></div>
+
+    <div class="section-head"><h2>Reference comparison</h2><p>One-responder reference case at severity 1 and hospital capacity 3</p></div>
+    <section id="comparison" class="compare"></section>
+  </div>
+  <footer class="foot"><strong>Assumption:</strong> each severity step above 1 adds one exposure point (maximum 5) and increases rescue duration by 15%, rounded up. Severity is held constant during each run; changing water levels within a run are not modeled.</footer>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const ranges = ["severity", "responders", "capacity"];
+  ranges.forEach((id) => $(id).addEventListener("input", () => {
+    const value = $(id).value;
+    $(id + "-value").textContent = id === "severity" ? `${value} / 5` : value;
+  }));
+  const safe = (value) => String(value);
+  function statusBadge(value) {
+    if (value === "admitted") return '<span class="status admitted">Admitted</span>';
+    if (value === "declined") return '<span class="status declined">Declined</span>';
+    return '<span class="status none">No referral</span>';
+  }
+  function comparisonCard(title, data) {
+    return `<article class="compare-card"><h3>${title}</h3><p>Evacuated: <strong>${data.evacuated}/${data.households}</strong></p><p>Average assignment: <strong>${data.average_response_time_minutes} min</strong></p><p>Hospital: <strong>${data.hospital_admissions} admitted · ${data.hospital_declined} declined</strong></p></article>`;
+  }
+  async function runScenario() {
+    const button = $("run");
+    button.disabled = true; button.textContent = "Running…";
+    $("loading").hidden = false; $("loading").textContent = "Calculating deterministic scenario…";
+    $("error").hidden = true; $("dashboard").hidden = true;
+    const params = new URLSearchParams({severity:$("severity").value, responders:$("responders").value, capacity:$("capacity").value});
+    try {
+      const response = await fetch(`/api/run?${params}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not run the scenario");
+      const current = data.current;
+      $("scenario-name").textContent = current.scenario;
+      $("assumption").textContent = data.assumption;
+      $("evacuated").textContent = `${current.evacuated}/${current.households}`;
+      $("success").textContent = `${current.evacuation_success_rate_percent}% success`;
+      $("response").textContent = current.average_response_time_minutes;
+      $("makespan").textContent = current.makespan_minutes;
+      $("utilisation").textContent = `${current.responder_utilisation_percent}%`;
+      $("referrals").textContent = `${current.hospital_admissions} admitted`;
+      $("referral-detail").textContent = `${current.hospital_declined} declined · ${current.capacity_violations} capacity violations`;
+      $("responder-cards").innerHTML = data.responder_cards.map((r) => `<article class="responder"><div class="responder-head"><span>${safe(r.responder_id)}</span><span>${r.utilisation_percent}%</span></div><p>${r.tasks} household assignment(s) · ${r.busy_minutes} busy minutes</p><div class="bar"><i style="width:${Math.max(0,Math.min(100,r.utilisation_percent))}%"></i></div></article>`).join("");
+      $("households").innerHTML = current.household_results.map((h) => `<tr><td><strong>${safe(h.household_id)}</strong></td><td>${h.priority}</td><td>${h.exposure}/5</td><td>${h.rescue_minutes} min</td><td>${h.assigned_at} min</td><td>${safe(h.responder_id || "—")}</td><td>${statusBadge(h.hospital_status)}</td></tr>`).join("");
+      $("comparison").innerHTML = comparisonCard("Reference baseline", data.baseline) + comparisonCard("Selected conditions", current);
+      $("dashboard").hidden = false;
+    } catch (error) {
+      $("error").textContent = error.message;
+      $("error").hidden = false;
+    } finally {
+      $("loading").hidden = true; button.disabled = false; button.textContent = "Run scenario";
+    }
+  }
+  $("run").addEventListener("click", runScenario);
+  runScenario();
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@ A Multi-Agent Crisis Simulation System for Urban Flash-Flood Response. The Semes
 
 ## Quick start
 
-Requires Python 3.10+ and uses only the standard library.
+Requires Python 3.10+ and uses only the Python standard library.
 
 ```powershell
 python main.py
@@ -14,6 +14,20 @@ This runs three experiments: (1) one responder and hospital capacity three, (2) 
 
 ```powershell
 python crisissim.py --hospital-capacity 3 --shortage-capacity 1
+```
+
+Start the interactive local dashboard with:
+
+```powershell
+python dashboard.py
+```
+
+Open `http://127.0.0.1:8000` in a browser. Use the controls to change flood severity (1–5), responder count (1–5), and hospital capacity (1–5), then select **Run scenario**. The dashboard displays household and responder agents, assignment and evacuation measures, hospital admissions or declined referrals, and a reference-baseline comparison. It runs locally and needs no extra packages.
+
+The command-line program also accepts a flood severity for the complete three-scenario suite:
+
+```powershell
+python crisissim.py --flood-severity 4
 ```
 
 ## Model rules
@@ -37,9 +51,9 @@ These are model outputs, not real-world findings. The capacity-one shortage is a
 
 ## Implemented scope and future work
 
-Implemented: command-line simulation, fixed synthetic scenario, household/responder/hospital agents, deterministic priority and dispatch, configurable resource counts/capacity, CSV/JSON summaries, and unit tests.
+Implemented: command-line simulation, local visual dashboard, synthetic household/responder/hospital agents, deterministic priority and dispatch, configurable responders and hospital capacity, flood severity variation between runs, CSV/JSON summaries, and unit tests.
 
-Not implemented: visual dashboard, changing flood or sensor conditions, geography/routing, AI/ML decision-making, uncertainty, or real emergency protocols. These remain proposed future work. The original report schematic is project-created; no illustrative photographs are included.
+The dashboard applies the chosen severity for the whole run. It increases exposure by one point per level above 1 (capped at 5) and increases rescue time by 15% per level, rounded up. These are explicit classroom assumptions applied to fictional records. Water levels changing during a run, sensor streams, geography/routing, AI/ML decision-making, uncertainty, and real emergency protocols are not implemented and remain future work. Outputs are simulated results, not real-world findings or emergency guidance. The original report schematic is project-created; no illustrative photographs are included.
 
 ## Tests
 

@@ -6,6 +6,7 @@ import csv
 import json
 from copy import deepcopy
 from dataclasses import asdict, dataclass
+from math import ceil
 from pathlib import Path
 
 
@@ -80,10 +81,28 @@ def load_households(path: Path) -> list[Household]:
     return households
 
 
-def simulate(households: list[Household], responder_count: int, hospital_capacity: int) -> dict:
+def simulate(
+    households: list[Household],
+    responder_count: int,
+    hospital_capacity: int,
+    flood_severity: int = 1,
+) -> dict:
+    """Run one deterministic scenario at a chosen fixed severity (1 to 5).
+
+    The severity control represents a different set of conditions for each run.
+    Each level above 1 raises household exposure (capped at 5) and adds 15% to
+    rescue duration per level, rounded up to a whole simulated minute.
+    """
     if responder_count < 1:
         raise ValueError("At least one responder is required")
+    if not 1 <= flood_severity <= 5:
+        raise ValueError("Flood severity must be between 1 and 5")
     agents = deepcopy(households)
+    for household in agents:
+        household.exposure = min(5, household.exposure + flood_severity - 1)
+        household.rescue_minutes = ceil(
+            household.rescue_minutes * (1 + 0.15 * (flood_severity - 1))
+        )
     responders = [Responder(f"R{i + 1}") for i in range(responder_count)]
     hospital = Hospital(hospital_capacity)
     waiting = sorted(agents, key=lambda h: (-h.priority, h.household_id))
@@ -111,6 +130,7 @@ def simulate(households: list[Household], responder_count: int, hospital_capacit
     return {
         "responders": responder_count,
         "households": len(agents),
+        "flood_severity": flood_severity,
         "evacuated": len(completed),
         "evacuation_success_rate_percent": round(100 * len(completed) / len(agents), 1),
         "average_response_time_minutes": round(sum(response_times) / len(response_times), 2),
@@ -132,8 +152,9 @@ def run_experiments(
     households: list[Household],
     baseline_capacity: int = 3,
     shortage_capacity: int = 1,
+    flood_severity: int = 1,
 ) -> list[dict]:
-    """Compare responder counts, then demonstrate a separate hospital shortage."""
+    """Compare responder counts and a hospital shortage at a selected severity."""
     scenarios = [
         ("Baseline: 1 responder, capacity 3", 1, baseline_capacity),
         ("Baseline: 2 responders, capacity 3", 2, baseline_capacity),
@@ -141,7 +162,9 @@ def run_experiments(
     ]
     results = []
     for name, responders, capacity in scenarios:
-        result = simulate(households, responders, capacity)
+        result = simulate(households, responders, capacity, flood_severity)
+        if flood_severity > 1:
+            name += f", flood severity {flood_severity}/5"
         result["scenario"] = name
         results.append(result)
     return results
@@ -188,6 +211,13 @@ def main() -> None:
         default=1,
         help="Capacity for the separate hospital-shortage scenario",
     )
+    parser.add_argument(
+        "--flood-severity",
+        type=int,
+        choices=range(1, 6),
+        default=1,
+        help="Synthetic flood severity from 1 (mild) to 5 (severe)",
+    )
     args = parser.parse_args()
 
     households = load_households(args.data)
@@ -195,6 +225,7 @@ def main() -> None:
         households,
         baseline_capacity=args.hospital_capacity,
         shortage_capacity=args.shortage_capacity,
+        flood_severity=args.flood_severity,
     )
     write_outputs(results, args.output)
     print("CRISISSIM - DETERMINISTIC EDUCATIONAL BASELINE")
