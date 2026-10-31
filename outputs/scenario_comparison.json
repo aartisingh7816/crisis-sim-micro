@@ -9,8 +9,15 @@
     "responder_utilisation_percent": 100.0,
     "hospital_capacity": 3,
     "hospital_admissions": 3,
+    "hospital_admitted_households": [
+      "H01",
+      "H02",
+      "H04"
+    ],
     "hospital_declined": 0,
-    "capacity_violations": 0
+    "hospital_declined_households": [],
+    "capacity_violations": 0,
+    "scenario": "Baseline: 1 responder, capacity 3"
   },
   {
     "responders": 2,
@@ -22,7 +29,35 @@
     "responder_utilisation_percent": 90.0,
     "hospital_capacity": 3,
     "hospital_admissions": 3,
+    "hospital_admitted_households": [
+      "H01",
+      "H02",
+      "H04"
+    ],
     "hospital_declined": 0,
-    "capacity_violations": 0
+    "hospital_declined_households": [],
+    "capacity_violations": 0,
+    "scenario": "Baseline: 2 responders, capacity 3"
+  },
+  {
+    "responders": 2,
+    "households": 5,
+    "evacuated": 5,
+    "evacuation_success_rate_percent": 100.0,
+    "average_response_time_minutes": 12.0,
+    "makespan_minutes": 35,
+    "responder_utilisation_percent": 90.0,
+    "hospital_capacity": 1,
+    "hospital_admissions": 1,
+    "hospital_admitted_households": [
+      "H01"
+    ],
+    "hospital_declined": 2,
+    "hospital_declined_households": [
+      "H02",
+      "H04"
+    ],
+    "capacity_violations": 0,
+    "scenario": "Hospital shortage: 2 responders, capacity 1"
   }
 ]

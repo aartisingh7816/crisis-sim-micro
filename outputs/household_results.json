@@ -10,6 +10,7 @@
       "assigned_at": 0,
       "completed_at": 18,
       "responder_id": "R1",
+      "hospital_status": "admitted",
       "priority": 15
     },
     {
@@ -22,6 +23,7 @@
       "assigned_at": 18,
       "completed_at": 33,
       "responder_id": "R1",
+      "hospital_status": "admitted",
       "priority": 13
     },
     {
@@ -34,6 +36,7 @@
       "assigned_at": 33,
       "completed_at": 45,
       "responder_id": "R1",
+      "hospital_status": "not_requested",
       "priority": 13
     },
     {
@@ -46,6 +49,7 @@
       "assigned_at": 45,
       "completed_at": 55,
       "responder_id": "R1",
+      "hospital_status": "admitted",
       "priority": 8
     },
     {
@@ -58,6 +62,7 @@
       "assigned_at": 55,
       "completed_at": 63,
       "responder_id": "R1",
+      "hospital_status": "not_requested",
       "priority": 5
     }
   ],
@@ -72,6 +77,7 @@
       "assigned_at": 0,
       "completed_at": 18,
       "responder_id": "R1",
+      "hospital_status": "admitted",
       "priority": 15
     },
     {
@@ -84,6 +90,7 @@
       "assigned_at": 0,
       "completed_at": 15,
       "responder_id": "R2",
+      "hospital_status": "admitted",
       "priority": 13
     },
     {
@@ -96,6 +103,7 @@
       "assigned_at": 15,
       "completed_at": 27,
       "responder_id": "R2",
+      "hospital_status": "not_requested",
       "priority": 13
     },
     {
@@ -108,6 +116,7 @@
       "assigned_at": 18,
       "completed_at": 28,
       "responder_id": "R1",
+      "hospital_status": "admitted",
       "priority": 8
     },
     {
@@ -120,6 +129,74 @@
       "assigned_at": 27,
       "completed_at": 35,
       "responder_id": "R2",
+      "hospital_status": "not_requested",
+      "priority": 5
+    }
+  ],
+  [
+    {
+      "household_id": "H01",
+      "vulnerability": 5,
+      "exposure": 5,
+      "rescue_minutes": 18,
+      "medical_need": true,
+      "status": "evacuated",
+      "assigned_at": 0,
+      "completed_at": 18,
+      "responder_id": "R1",
+      "hospital_status": "admitted",
+      "priority": 15
+    },
+    {
+      "household_id": "H02",
+      "vulnerability": 4,
+      "exposure": 5,
+      "rescue_minutes": 15,
+      "medical_need": true,
+      "status": "evacuated",
+      "assigned_at": 0,
+      "completed_at": 15,
+      "responder_id": "R2",
+      "hospital_status": "declined",
+      "priority": 13
+    },
+    {
+      "household_id": "H03",
+      "vulnerability": 5,
+      "exposure": 3,
+      "rescue_minutes": 12,
+      "medical_need": false,
+      "status": "evacuated",
+      "assigned_at": 15,
+      "completed_at": 27,
+      "responder_id": "R2",
+      "hospital_status": "not_requested",
+      "priority": 13
+    },
+    {
+      "household_id": "H04",
+      "vulnerability": 2,
+      "exposure": 4,
+      "rescue_minutes": 10,
+      "medical_need": true,
+      "status": "evacuated",
+      "assigned_at": 18,
+      "completed_at": 28,
+      "responder_id": "R1",
+      "hospital_status": "declined",
+      "priority": 8
+    },
+    {
+      "household_id": "H05",
+      "vulnerability": 1,
+      "exposure": 3,
+      "rescue_minutes": 8,
+      "medical_need": false,
+      "status": "evacuated",
+      "assigned_at": 27,
+      "completed_at": 35,
+      "responder_id": "R2",
+      "hospital_status": "not_requested",
       "priority": 5
     }
   ]

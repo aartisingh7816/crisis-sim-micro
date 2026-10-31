@@ -1,3 +1,4 @@
-﻿responders,households,evacuated,evacuation_success_rate_percent,average_response_time_minutes,makespan_minutes,responder_utilisation_percent,hospital_capacity,hospital_admissions,hospital_declined,capacity_violations
-1,5,5,100.0,30.2,63,100.0,3,3,0,0
-2,5,5,100.0,12.0,35,90.0,3,3,0,0
+﻿responders,households,evacuated,evacuation_success_rate_percent,average_response_time_minutes,makespan_minutes,responder_utilisation_percent,hospital_capacity,hospital_admissions,hospital_admitted_households,hospital_declined,hospital_declined_households,capacity_violations,scenario
+1,5,5,100.0,30.2,63,100.0,3,3,"['H01', 'H02', 'H04']",0,[],0,"Baseline: 1 responder, capacity 3"
+2,5,5,100.0,12.0,35,90.0,3,3,"['H01', 'H02', 'H04']",0,[],0,"Baseline: 2 responders, capacity 3"
+2,5,5,100.0,12.0,35,90.0,1,1,['H01'],2,"['H02', 'H04']",0,"Hospital shortage: 2 responders, capacity 1"
