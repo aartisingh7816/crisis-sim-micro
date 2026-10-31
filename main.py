@@ -1,4 +1,4 @@
-"""CrisisSim public entry point, preserving the original repository's run command."""
+"""CrisisSim public entry point for the three-scenario experiment suite."""
 from crisissim import Hospital as HospitalAgent
 from crisissim import Household as HouseholdAgent
 from crisissim import Responder as ResponderAgent
@@ -6,7 +6,7 @@ from crisissim import main as _main
 
 
 def run_simulation():
-    """Run the documented one- and two-responder comparison."""
+    """Run two capacity-three baselines and the capacity-one shortage case."""
     _main()
 
 
